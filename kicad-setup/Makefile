@@ -1,3 +1,5 @@
+# The root folder you want to put stuff for kicad.
+# project path to say where everything is checked out to.
 project-base := ~/play/circuits
 
 # Places for things.
@@ -12,10 +14,17 @@ plugindest := ~/.kicad_plugins
 # kicad keeps it's stuff here.
 kicad-share := /usr/share/kicad
 
+# How to install a package on your system.
+# This is Arch Linux
+arch-install-cmd := sudo pacman -S --noconfirm --needed
+package-install-cmd := $(arch-install-cmd)
+
 # Purpose:
-# Install kicad and then go clone some kicad librarys and modules.
-# clone some doc repos, and some sample project repos.
-# project path to say where everything is checked out to.
+# Install kicad and then go clone (github,gitlab,)
+# a bunch of stuff and install that.
+#   - kicad librarys and modules.
+#   - doc repos
+#   - sample project repos.
 
 # This is basically a kicad intallation with some extra
 # libraries and modules, some example projects and some
@@ -29,50 +38,74 @@ kicad-share := /usr/share/kicad
 # Copy the librarys and modules to /usr/share/kicad/ where
 # it wants them.
 # check out some other projects for exmaples.
-# keep everything organized in a folder in my projects tree.
+# keep everything organized in a folder in a projects tree.
 
 # I have no idea if there are conflicts between libraries and
 # modules here. It can be sorted out, but I havent.
 
-# So read the code here. This is make.
+# So read the code here. This is make. its easy.
+#
+# There are different things we need and want.
+#   - Stuff to install with system installer - pacman - Arch linux.
+#   - Github things
+#     - Kicad things
+#       - libraries
+#       - modules
+#       - plugins
+#     - Extra samples and stuff to read.
+#       - projects.
+#       - docs.
 #
 # These are some choices...
-# make all to do it all.
+# - make all        - to do it all.
 #
-# make all - everything. - it's the default
-# make install  - no projects or docs.
-# make clean - remove the projects, too late for the install.
+# - make, make all  - everything. - it's the default if you dont say.
+# - make install    - no projects or docs.
+# - make clean      - remove the projects, everything but the installed
+#                     modules and libraries.,
+#
 # so to install everything and forget about it,
-# make install; make clean
+#     make install; make clean
 
-# make install-kicad,  install-mods, install-libs
-# make projects, libs, mods, docs
+# Other possiblities:
+#    make install-kicad install-mods install-libs
+#    make projects libs mods, docs
 
+# Read the makefile here. It is easy to understand.
 
 # understandably, make doesn't like colons in it's target names.
 http := "https://"
 
+###############################################################
+# Define our lists of things.
+###############################################################
+
 # packages for pacman
 kicad-pkgs := kicad kicad-library kicad-library-3d
 
+# libraries for kicad
 libraries := github.com/tmk/kicad_lib_tmk.git \
 	github.com/keebio/keebio-components.git \
 	github.com/foostan/kbd.git \
 	github.com/daprice/keyswitches.pretty.git
 
 
+# modules for kicad
 modules := github.com/tmk/keyboard_parts.pretty.git \
 	github.com/egladman/keebs.pretty.git \
 	github.com/keebio/Keebio-Parts.pretty.git \
 	github.com/keebio/Hybrid-Switches.pretty.git
 
+# plugins for kicad
 plugins := github.com/MitjaNemec/Kicad_action_plugins.git \
 	github.com/easyw/RF-tools-KiCAD.git \
 	github.com/jsreynaud/kicad-action-scripts.git \
 	github.com/NilujePerchut/kicad_scripts.git
 
+# just some docs.
 docs := github.com/keebio/keebio-docs.git
 
+# Sample keyboard projects.
 projects := github.com/kiibohd/pcb.git \
         github.com/zgtk-guri/c-pro-micro.git \
 	github.com/foostan/crkbd.git \
@@ -85,27 +118,35 @@ projects := github.com/kiibohd/pcb.git \
 	github.com/tamanishi/Pinky3.git \
 	github.com/tamanishi/Pinky4.git
 
+######################################################################
+# Set up the dependencies and the install rules.
+######################################################################
 # an experiment
 docword := $(lastword $(subst  /, , $(docs)))
 wc_docs := $(if $(wildcard $(docpath)/$(subst .git, , $(lastword $(stubst /, , $@)))),\
 	hello, NO)
 
+# handy for printing variables and debugging your Makefile.
 print-%  : ; @echo $* = $($*)
 
+# do our phonies.
 .PHONY: libs modules docs mods plugins install-plugins
 .PHONY: install-kicad install-mods install-libs clean
 
 everything := $(kicad-pkgs) $(libraries) $(modules) $(docs) $(projects)
 .PHONY: $(everything)
 
-all: $(everything) install-mods install-libs install-plugins
+
+# set up our targets and dependencies.
+# first target is the default
+all: $(everything) install
 
 install: install-kicad install-libs install-mods install-plugins
 
 install-kicad: $(kicad-pkgs)
 
 $(kicad-pkgs):
-	sudo pacman -S --noconfirm --needed $@
+	$(package-install-cmd) $@
 
 # copy the libs and modules to /usr/share/kicad ?
 # pretty directorys go in modules, libs and dcms go in library
@@ -135,6 +176,13 @@ clean:
 	rm -rf $(libpath)
 	rm -rf $(modpath)
 	rm -rf $(docpath)
+
+
+#########################################################################
+# Handle the different types of actions needed for
+# gathering all the different things.
+# All the same but to different places.
+#########################################################################
 
 cloneit = $(mkdir -p $1; cd $1; git clone $(http)$2)
 do-path = $1/$(firstword $(subst .git, , $(lastword $(subst  /, , $2))))
