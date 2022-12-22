@@ -29,7 +29,7 @@ _You must install all dependencies into your chroot first_.
 
 Another problem, for me, was that some packages are not 
 [meta-packages, but package groups](https://wiki.archlinux.org/index.php/Meta_package_and_package_group)
-package groups like xorg, xorg-apps, xfce, gnome, and so forth cannot be installed via 
+package groups like xorg, xorg-apps, xfce4, gnome, and so forth cannot be installed via 
 dependencies in a [PKGBUILD](https://wiki.archlinux.org/index.php/PKGBUILD). 
 Either you need to find out what packages are in them and add each one to your packages 
 explicitly or you can just install them separately in your script.  I chose the latter because I don't like having to maintain unecessary things.
@@ -50,77 +50,36 @@ Makefile if you are curious.
 
 
 ## What is here.
-
-├── README.md
-├── Makefile
+.
 ├── install-arch
 ├── install-packages
+├── Makefile
+├── README.md
 ├── arch-pkgs
-│   ├── README.md
-│   ├── Makefile
+│   ├── {}
+│   ├── anbox
 │   ├── audio
 │   ├── devel
+│   ├── emacs-pkg-setup
+│   ├── games
+│   ├── Makefile
+│   ├── maker
+│   ├── minduino
 │   ├── mobile-studio-pro
 │   ├── natural-language
 │   ├── necessities
+│   ├── README.md
 │   ├── tablet
 │   ├── X11
 │   ├── X11-apps
-│   ├── Xfce
 │   ├── Xmonad
 │   └── yay
 ├── bc-extensions
-│   ├── README.md
-│   ├── Makefile
-│   ├── array.bc
-│   ├── extensions.bc
-│   ├── misc.bc
-│   ├── primes.bc
-│   └── rand.bc
 ├── dotfiles
-│   ├── README.md
-│   ├── Makefile
-│   ├── hidpi.txt
-│   ├── bin
-│   │   ├── bcl
-│   │   ├── cellwriter@point
-│   │   ├── emacsn
-│   │   ├── flash-ergodox
-│   │   ├── new-re-frame-proj
-│   │   ├── serve-jekyll
-│   │   └── switch-kbd
-│   └── xcursor.theme
 ├── emacs-setup
-│   ├── README.md
-│   ├── Makefile
-│   ├── elisp
-│   │   ├── bytecompiledir.el
-│   │   ├── config
-│   │   │   ├── Configuration files for everything.
-│   │   ├── extensions
-│   │   │   ├── Lisp extensions that have no package.
-│   │   ├── packages.el
-│   │   ├── setup.el
-│   │   ├── themes
-│   │   │   ├── Oh so many themes.
-│   │   └── vars.el
-│   ├── fonts
-│   ├── lein-profiles-example.clj
-│   └── mbsyncrc
-├── xmonad-log-applet
-│   ├── README.md
-│   ├── AUTHORS.md
-│   ├── autogen.sh
-│   ├── configure.ac
-│   └── ....
+├── kicad-setup
+├── onboard-layouts
 └── xmonad-setup
-    ├── README.md
-    ├── Makefile
-    ├── ocean_park_114.jpg
-    ├── xmonad.desktop
-    └── xmonad.start
-
-32 directories, 364 files
 
 * 2 shell scripts, Makefiles everywhere.
    * install-arch  - to install arch from a Live USB
@@ -130,8 +89,7 @@ Makefile if you are curious.
 * dotfiles -  My dotfiles and scripts repo
 * bc-extensions - My [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html) extensions repo
 * emacs-setup - My [emacs](https://www.gnu.org/software/emacs/) configuration repo
-* xmonad-setp - My [Xmonad](http://xmonad.org) configuration repo
-* xmonad-log-applet - My repo to build xmonad-log-applet which allows xmonad to communicate 
+* xmonad-setup - My [Xmonad](http://xmonad.org) configuration repo
 with the panel/toolbar of xfce, gnome, kde, or mate.
 
 ## Getting started.
@@ -139,10 +97,10 @@ with the panel/toolbar of xfce, gnome, kde, or mate.
  * boot your Arch Linux Live USB
  * get an internet connection.  _wifi-menu_ is easy if you have wifi.
  * curl the _install-arch_ script from this repo.
-    `curl https://raw.githubusercontent.com/EricGebhart/Arch-Setup/master/install-arch  > ./install-arch`
+    `curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
  * Make it executable: `chmod a+x ./install-arch` 
  * Get help `./install-arch -h`
-    curl https://raw.githubusercontent.com/EricGebhart/Arch-Setup/master/install-arch  > ./install-arch`
+    curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
     chmod a+x ./install-arch` 
     ./install-arch -h`
  
@@ -182,7 +140,7 @@ You are on your own from here...
 
 To clone this repo so you can just do the _install-packages_ script do this.  
 
- `git clone --remote-submodules --recursive-submodules http://github.com/ericgebhart/Arch-Setup`
+ `git clone --remote-submodules --recursive-submodules http://github.com/EricaLinaG/Arch-Setup`
 
 Or more likely, you should just fork this repo and add what you want. 
 If you feel like sharing, do a pull request.
@@ -208,7 +166,8 @@ If you feel like sharing, do a pull request.
  directory, installed by the _install-arch_ and run _install-packages_ to finish
  up installation and personalization of your system.
  
-Really, doing it all manually is not rocket science unless you are a newbie.
+Really, doing it all manually is not rocket science, just be careful to follow the
+instructions.
   * fdisk/parted, 
   * mkfs, 
   * mounts
@@ -235,7 +194,7 @@ Really, doing it all manually is not rocket science unless you are a newbie.
     arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
     # fetch this repo into my new user account so I can install the rest of my stuff 
     # with my package-installer after reboot.
-    arch-chroot -u "$user" /mnt git clone --remote-submodules --recurse-submodules https://github.com/ericgebhart/Arch-Setup
+    arch-chroot -u "$user" /mnt git clone --remote-submodules --recurse-submodules https://github.com/EricaLinaG/Arch-Setup
  
  
 ## package-installer
@@ -256,7 +215,7 @@ Really, doing it all manually is not rocket science unless you are a newbie.
  
 ### submodule repos used here are:
  
- * [arch-pkgs](http://github.com/ericgebhart/arch-pkgs) - My arch meta-packages.
+ * [arch-pkgs](http://github.com/EricaLinaG/arch-pkgs) - My arch meta-packages.
  
 #### The Necessities choice
 
@@ -264,22 +223,19 @@ The necessities package gets installed no matter what. Everything depends on it.
 It includes all the basic things you might need.
 
  * necessities  - An Arch pkgbuild with various basic tools, wget, ssh, traceroute, emacs, vi, nano, etc..
- * [dotfiles](http://github.com/ericgebhart/dotfiles)  - My dotfiles, zsh, Xresources, and miscellaneous other things that mostly
+ * [dotfiles](http://github.com/EricaLinaG/dotfiles)  - My dotfiles, zsh, Xresources, and miscellaneous other things that mostly
    go into my _~/bin_ directory.  Includes a high DPI udate to _.Xresources_ if chosen.
- * [bc-extensions](http://github.com/ericgebhart/bc-extensions) which is a set of extensions for bc.
- * [emacs-setup](http://github.com/ericgebhart/emacs-setup) - My emacs setup which includes isync and mu4e for email.
+ * [bc-extensions](http://github.com/EricaLinaG/bc-extensions) which is a set of extensions for bc.
+ * [emacs-setup](http://github.com/EricaLinaG/emacs-setup) - My emacs setup which includes isync and mu4e for email.
    [yay](http://github.com/jguer/yay) - An installer for packages in the AUR.
 
 #### Xmonad
- * [xmonad-setup](http://github.com/ericgebhart/xmonad-setup) - My Xmonad configuration.
- * [xmonad-log-applet](http://github.com/ericgebhart/xmonad-log-applet) - An applet that 
- allows communication between XMonad and the panel which comes with xfce4, gnome, kde and mate.
+ * [xmonad-setup](http://github.com/EricaLinaG/xmonad-setup) - My Xmonad configuration.
  
 
 ## See Also:
 
-[Arch Linux; Creating an automated install and personal Setup](http://ericgebhart.com/blog/code/2020-03-15-Arch-Linux/)
- 
+* [Arch Linux; Creating an automated install and personal Setup](http://ericgebhart.com/blog/code/2020-03-15-Arch-Linux/)
 * [hosting an arch linux repository in an amazon s3 bucket]: https://disconnected.systems/blog/archlinux-repo-in-aws-bucket
 * [managing arch linux with meta packages]: https://disconnected.systems/blog/archlinux-meta-packages
 * [creating a custom arch linux installer]: https://disconnected.systems/blog/archlinux-installer
