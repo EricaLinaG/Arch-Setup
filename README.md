@@ -50,7 +50,7 @@ Makefile if you are curious.
 
 
 ## What is here.
-.
+```
 ├── install-arch
 ├── install-packages
 ├── Makefile
@@ -80,6 +80,7 @@ Makefile if you are curious.
 ├── kicad-setup
 ├── onboard-layouts
 └── xmonad-setup
+```
 
 * 2 shell scripts, Makefiles everywhere.
    * install-arch  - to install arch from a Live USB
