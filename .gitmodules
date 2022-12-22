@@ -1,16 +1,16 @@
 [submodule "arch-pkgs"]
 	path = arch-pkgs
-	url = http://github.com/ericgebhart/arch-pkgs
+	url = git@github.com:EricaLinaG/arch-pkgs.git
 	branch = master
 	update = rebase
 [submodule "emacs-setup"]
 	path = emacs-setup
-	url = http://github.com/ericgebhart/emacs-setup
+	url = git@github.com:EricaLinaG/emacs-setup.git
 	branch = master
 	update = rebase
 [submodule "xmonad-setup"]
 	path = xmonad-setup
-	url = http://github.com/ericgebhart/xmonad-setup
+	url = git@github.com:EricaLinaG/xmonad-setup.git
 	branch = master
 [submodule "xmonad-log-applet"]
 	path = xmonad-log-applet
@@ -19,11 +19,11 @@
 	update = rebase
 [submodule "bc-extensions"]
 	path = bc-extensions
-	url = http://github.com/ericgebhart/bc-extensions
+	url = git@github.com:EricaLinaG/bc-extensions.git
 	branch = master
 [submodule "dotfiles"]
 	path = dotfiles
-	url = http://github.com/ericgebhart/dotfiles
+	url = git@github.com:EricaLinaG/dotfiles.git
 	branch = master
 	update = rebase
 [submodule "rch-pkgs"]
@@ -34,7 +34,8 @@
 	branch = master
 [submodule "onboard-layouts"]
 	path = onboard-layouts
-	url = https://github.com/ericgebhart/onboard-layouts.git
+	url = git@github.com:EricaLinaG/onboard-layouts
+	branch = master
 [submodule "xmonad-log-plasmoid"]
 	path = xmonad-log-plasmoid
 	url = https://github.com/ericgebhart/xmonad-log-plasmoid
