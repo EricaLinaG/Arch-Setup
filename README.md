@@ -91,7 +91,7 @@ Makefile if you are curious.
 * bc-extensions - My [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html) extensions repo
 * emacs-setup - My [emacs](https://www.gnu.org/software/emacs/) configuration repo
 * xmonad-setup - My [Xmonad](http://xmonad.org) configuration repo
-with the panel/toolbar of xfce, gnome, kde, or mate.
+with polybar, dzen, dmenu.
 
 ## Getting started.
 
@@ -237,6 +237,6 @@ It includes all the basic things you might need.
 ## See Also:
 
 * [Arch Linux; Creating an automated install and personal Setup](http://ericgebhart.com/blog/code/2020-03-15-Arch-Linux/)
-* [hosting an arch linux repository in an amazon s3 bucket]: https://disconnected.systems/blog/archlinux-repo-in-aws-bucket
-* [managing arch linux with meta packages]: https://disconnected.systems/blog/archlinux-meta-packages
-* [creating a custom arch linux installer]: https://disconnected.systems/blog/archlinux-installer
+* [hosting an arch linux repository in an amazon s3 bucket](https://disconnected.systems/blog/archlinux-repo-in-aws-bucket)
+* [managing arch linux with meta packages](https://disconnected.systems/blog/archlinux-meta-packages)
+* [creating a custom arch linux installer](https://disconnected.systems/blog/archlinux-installer)
