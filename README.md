@@ -99,9 +99,6 @@ with polybar, dzen, dmenu.
     `curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
  * Make it executable: `chmod a+x ./install-arch` 
  * Get help `./install-arch -h`
-    curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
-    chmod a+x ./install-arch` 
-    ./install-arch -h`
  
  * Partition and possibly format your drive or not.
 
