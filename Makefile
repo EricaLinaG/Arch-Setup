@@ -12,7 +12,6 @@ print-%  : ; @echo $* = $($*)
 
 clean:
 	$(MAKE) -C arch-pkgs clean
-	$(MAKE) -C xmonad-log-applet clean
 
 $(packages):
 	$(MAKE) -C arch-pkgs $@
@@ -31,12 +30,6 @@ enable-anbox:
 
 xmonad-xsession:
 	$(MAKE) -C xmonad-setup xsession
-
-# the default is to build for xfce.
-xmonad-log-applet: Xmonad
-	cd $@; ./autogen.sh
-	$(MAKE) -C $@
-	$(MAKE) -C $@ install
 
 emacs-setup-w-extras: emacs-setup emacs-pkg-setup
 	$(MAKE) -C emacs-setup mu4e
