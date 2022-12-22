@@ -54,13 +54,12 @@ exec 2> >(tee "pkg-install.log")
 # create a menu.
 cmd=(dialog --stdout --separate-output --checklist "Select Packages to install" 22 77 16)
 options=(
-    1 "Necessities - shells, utilities, ssh, traceroute, yay, etc." on
+    1 "Necessities - shells, utilities, ssh, fonts, traceroute, yay, etc." on
     2 "X11 - xorg, libreOffice, vivaldi, etc."    on
     3 "Xmonad - Haskell, polybar, etc." on
     4 "dot files - (.zsh, .Xresources, .icons, ~/bin,  etc" on
     5 "Emacs config with accomplices (isync, mu4e,...)"  on
     6 "Emacs config sans accomplices"  off
-    7 "Xfce"   off
     8 "development - clojure, python, ruby, racket, guile, etc."  on
     9 "Tablet - Pen stuff - krita, cellwriter, onboard..." on
     10 "Natural language - hunspell, languagetool, ..."   on

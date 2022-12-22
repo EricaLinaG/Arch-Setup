@@ -18,10 +18,8 @@ by creating a
 I've gone down that path. It's complicated and time consuming, and has a few 
 problems simply because of the philosophy behind packages and the AUR.
 
-I have a few packages I prefer that come from the [AUR](https://aur.archlinux.org) such as 
-[vivaldi](http://vivaldi.com) and [mu4e](https://www.djcbsoftware.nl/code/mu/mu4e.html).  
-So far, I have not
-figured out how to _makechrootpkg_ from 
+I have a few packages I prefer that come from the [AUR](https://aur.archlinux.org).
+So far, I have not figured out how to _makechrootpkg_ from 
 [devtools](https://www.archlinux.org/packages/extra/any/devtools/) 
 to create a package that I can include in
 my local repo. It has complications of it's own.  To build anything from AUR 
