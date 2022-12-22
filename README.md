@@ -100,7 +100,8 @@ with polybar, dzen, dmenu.
  * Make it executable: `chmod a+x ./install-arch` 
  * Get help `./install-arch -h`
  
- * Partition and possibly format your drive or not.
+ * Partition and possibly format your drive or not. 
+   - the script will do that for you if you let it.
 
 Be Careful, have fun.
  
