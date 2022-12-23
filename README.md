@@ -6,39 +6,57 @@ This repo consists of two scripts and some submodules.
  * package-installer - a script frontend to the Makefile which will install some meta packages 
  and my setup repos for various things.  Xorg, Xmonad, emacs, dotfiles, apps, etc.
  
-## From scratch
+## Starting from scratch.
+ - Make an Arch Linux installation medium.
+   [the install guide is here.](https://wiki.archlinux.org/title/Installation_guide)
 
- - boot into a live Arch linux usb.
- - get internet connectivity
- - curl the installer
- - run the installer `./arch-install -h`
- - reboot
- - run the package-installer.
- - make sure do [localization](https://wiki.archlinux.org/index.php/Installation_guide#Localization)
-
-## Getting started.
-
- - boot your Arch Linux Live USB
+ - boot your Arch Linux Live disk.
  - get an internet connection. 
+   [the install guide is here.](https://wiki.archlinux.org/title/Installation_guide)
  - curl the _install-arch_ script from this repo.
     `curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
  - Make it executable: `chmod a+x ./install-arch` 
  - Get help `./install-arch -h`
  
-
- - Partition and possibly format your drive or not. 
+ - Partition and possibly format your target installation drive or not. 
    The script will do that for you if you let it.
    - efi will be 129M
    - swap will be the size of physical memory in the computer.
    - root will be the rest.
 
  - Run _install-arch_
-    `./install-arch -d /dev/sda -u Erica`
+     `./install-arch -d /dev/sda -u Erica`
+
    or if you want your own partitioning and formatting.
-    `./install-arch -e <efi partition> -s <swap partition> -r <root partition> -u <user>`
-    `./install-arch -e /dev/sda1 -r /dev/sda2 -u Erica`
+     `./install-arch -e <efi partition> -s <swap partition> -r <root partition> -u <user>`
+     `./install-arch -e /dev/sda1 -r /dev/sda2 -u Erica`
+   - install-arch also does this along the way.
+     `git clone --remote-submodules --recursive-submodules http://github.com/EricaLinaG/Arch-Setup`
+   
+ - reboot
+ - run `~/Arch-Setup/package-installer`
+   - It should just go the first time. It stops after dotfiles are installed.
+ - make sure to finish [localization.](https://wiki.archlinux.org/index.php/Installation_guide#Localization)
+ 
+
+## Get a network - Just in case there are network difficulties 
+If you used the installer, this should have been done.
+If all went correctly it should be connected already. But maybe not.
+Once network manager has been enabled and connected to a wifi it will remember 
+and automatically reconnect.  Just in case here are the steps. 
+
+[Network manager](https://wiki.archlinux.org/index.php/NetworkManager).   
+
+ - [start and enable the Network manager](https://wiki.archlinux.org/index.php/NetworkManager#Enable_NetworkManager).
+   - `sudo systemctl enable NetworkManager`
+   - `sudo systemctl start NetworkManager`
+ 
+ - [Connect as you like:](https://wiki.archlinux.org/index.php/NetworkManager#Usage)
+   - `nmtui` the NCurses based console gui
+   - `nmcli` the command line.
 
 
+# In case you possibly need more explanation.
 ## Arch-installer
 
  This is a basic arch installer. There isn't much to installing arch as it is,
@@ -123,7 +141,7 @@ instructions.
  * [xmonad-setup](http://github.com/EricaLinaG/xmonad-setup) - My Xmonad configuration.
 
  
-## Explanation
+## Explanation, as if anyone would want to know.
 
 _*Simply, I just wanted a way to replicate my install of Arch Linux, but simply.*_
 
@@ -197,42 +215,17 @@ Makefile if you are curious.
 └── xmonad-setup
 ```
 
-* 2 shell scripts, Makefiles everywhere.
-   * install-arch  - to install arch from a Live USB
-   * install-packages  -  Dialog checklist frontend to the Makefil. Install packages 
+ ### 2 shell scripts, Makefiles everywhere.
+  - install-arch      - to install arch from a Live USB
+  - install-packages  -  Dialog checklist frontend to the Makefiles. Install packages 
    from the offical repos or the AUR, from local PKGBUILDs as well as some of my repositories.
-* arch-pkgs - My Arch Linux meta package repo
-* dotfiles -  My dotfiles and scripts repo
-* bc-extensions - My [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html) extensions repo
-* emacs-setup - My [emacs](https://www.gnu.org/software/emacs/) configuration repo
-* xmonad-setup - My [Xmonad](http://xmonad.org) configuration repo
+ - arch-pkgs - My Arch Linux meta package repo
+ - dotfiles -  My dotfiles and scripts repo
+ - bc-extensions - My [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html) extensions repo
+ - emacs-setup - My [emacs](https://www.gnu.org/software/emacs/) configuration repo
+ - xmonad-setup - My [Xmonad](http://xmonad.org) configuration repo
 with polybar, dzen, dmenu.
 
- 
-## After basic installation and reboot
- 
-### Get a network. 
-If you used the installer, this should have been done. - double check.
-if all went correctly it should be connected already. But maybe not.
-Once network manager has connected to a wifi it will remember and automatically
-connect.  Just in case here are the steps. 
-
- * The _install-arch_ script installed 
-[Network manager](https://wiki.archlinux.org/index.php/NetworkManager).   
-
- * [start and enable the Network manager](https://wiki.archlinux.org/index.php/NetworkManager#Enable_NetworkManager).
-   * `sudo systemctl enable NetworkManager`
-   * `sudo systemctl start NetworkManager`
- 
- * [Connect as you like:](https://wiki.archlinux.org/index.php/NetworkManager#Usage)
-   * `nmtui` the NCurses based console gui
-   * `nmcli` the command line.
-   
-### install packages
-
- Run _install packages_ : `./install-packages`
- 
-You are on your own from here... 
 
 ## Make it yours
 
