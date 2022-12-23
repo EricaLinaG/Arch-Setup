@@ -6,6 +6,123 @@ This repo consists of two scripts and some submodules.
  * package-installer - a script frontend to the Makefile which will install some meta packages 
  and my setup repos for various things.  Xorg, Xmonad, emacs, dotfiles, apps, etc.
  
+## From scratch
+
+ - boot into a live Arch linux usb.
+ - get internet connectivity
+ - curl the installer
+ - run the installer `./arch-install -h`
+ - reboot
+ - run the package-installer.
+ - make sure do [localization](https://wiki.archlinux.org/index.php/Installation_guide#Localization)
+
+## Getting started.
+
+ - boot your Arch Linux Live USB
+ - get an internet connection. 
+ - curl the _install-arch_ script from this repo.
+    `curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
+ - Make it executable: `chmod a+x ./install-arch` 
+ - Get help `./install-arch -h`
+ 
+
+ - Partition and possibly format your drive or not. 
+   The script will do that for you if you let it.
+   - efi will be 129M
+   - swap will be the size of physical memory in the computer.
+   - root will be the rest.
+
+ - Run _install-arch_
+    `./install-arch -d /dev/sda -u Erica`
+   or if you want your own partitioning and formatting.
+    `./install-arch -e <efi partition> -s <swap partition> -r <root partition> -u <user>`
+    `./install-arch -e /dev/sda1 -r /dev/sda2 -u Erica`
+
+
+## Arch-installer
+
+ This is a basic arch installer. There isn't much to installing arch as it is,
+ but after doing it a bunch of times it's nice to have something that automates things a bit.
+ 
+ If you haven't installed Arch Linux manually a few times, following the instructions 
+ [in the instllation guide](https://wiki.archlinux.org/index.php/Installation_guide#Localization)
+ Then this script is possibly not for you.  Go earn some experience points over there first.
+ 
+ I sort of like doing the Arch install manually, it's not like it's too difficult. 
+ Some of it can be a bit tedious but the most
+ important things to me are really remembering the basic pacstrap packages I need, 
+ creating my user account with wheel & sudo and then cloning this repo with submodules 
+ into my home directory so I can install the rest of the system after reboot.
+ 
+ Basically, if you like, use _install-arch_ to install Arch from a live USB.
+ Then, after reboot, come to this Arch-Setup folder in the admin user's home
+ directory, installed by the _install-arch_ and run _install-packages_ to finish
+ up installation and personalization of your system.
+ 
+Really, doing it all manually is not rocket science, just be careful to follow the
+instructions.
+  * fdisk/parted, 
+  * mkfs, 
+  * mounts
+  * pacstrap
+  * genfstab 
+  * arch-chroot
+    * locale
+    * zoneinfo 
+    * boot-ctl 
+      * conf
+      * entries/entry
+    * passwd
+    * exit
+  * umount
+  * reboot
+ 
+ For me the important bits are these additions to the standard instructions. 
+ I always seem to forget somthing here.
+
+    # install the base system pieces I want and need to get a basic install.
+    pacstrap /mnt base linux linux-firmware base-devel devtools sudo network-manager git zsh dialog
+
+    # create my userid with wheel then go edit /etc/sudoers to give sudo to wheel.
+    arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
+    # fetch this repo into my new user account so I can install the rest of my stuff 
+    # with my package-installer after reboot.
+    arch-chroot -u "$user" /mnt git clone --remote-submodules --recurse-submodules https://github.com/EricaLinaG/Arch-Setup
+ 
+ 
+## package-installer
+ 
+ This script installs my metapackages and my personal configurations and scripts.
+ 
+ A checklist is provided for what you might want to install from my packages and repos.
+ 
+ Basic stuff like zsh dotfiles, .Xresources, my ~/bin folder, and emacs setup are
+ in _Necessities_. After that there are some extra packages if you choose _tablet_ or
+ mobile studio pro.  _High dpi_ is a group of settings which are added to **.Xresources**
+ by the dotfiles repo if you ask for it.  I need them for my Wacom mobile studio pro
+ and another computer which uses a wacom cintiq for a monitor. Both have resolutions around
+ 3840x2160, the text is super tiny and the mouse pointer is invisible without these settings.
+ 
+ Xorg and friends are always installed if you choose _Xmonad_ or _Xfce_. 
+ Dependencies between these choices is managed in the _Makefiles_.
+ 
+### submodule repos used here are:
+ 
+ * [arch-pkgs](http://github.com/EricaLinaG/arch-pkgs) - My arch meta-packages.
+ 
+#### my personal repos to finish my configuration.
+
+ * necessities  - An Arch pkgbuild with various basic tools, wget, ssh, traceroute, emacs, vi, nano, etc..
+ * [dotfiles](http://github.com/EricaLinaG/dotfiles)  - My dotfiles, zsh, Xresources, and miscellaneous other things that mostly
+   go into my _~/bin_ directory.  Includes a high DPI udate to _.Xresources_ if chosen.
+ * [bc-extensions](http://github.com/EricaLinaG/bc-extensions) which is a set of extensions for bc.
+ * [emacs-setup](http://github.com/EricaLinaG/emacs-setup) - My emacs setup which includes isync and mu4e for email.
+   [yay](http://github.com/jguer/yay) - An installer for packages in the AUR.
+
+#### Xmonad
+ * [xmonad-setup](http://github.com/EricaLinaG/xmonad-setup) - My Xmonad configuration.
+
+ 
 ## Explanation
 
 _*Simply, I just wanted a way to replicate my install of Arch Linux, but simply.*_
@@ -91,37 +208,21 @@ Makefile if you are curious.
 * xmonad-setup - My [Xmonad](http://xmonad.org) configuration repo
 with polybar, dzen, dmenu.
 
-## Getting started.
-
- * boot your Arch Linux Live USB
- * get an internet connection.  _wifi-menu_ is easy if you have wifi.
- * curl the _install-arch_ script from this repo.
-    `curl https://raw.githubusercontent.com/EricaLinaG/Arch-Setup/master/install-arch  > ./install-arch`
- * Make it executable: `chmod a+x ./install-arch` 
- * Get help `./install-arch -h`
- 
- * Partition and possibly format your drive or not. 
-   - the script will do that for you if you let it.
-
-Be Careful, have fun.
- 
- * Run _install-arch_
- * Something like this to install on a drive that is partitioned and formatted accordingly.
-    `./install-arch -e <efi partition> -r <root partition> -u <user>`
-    `./install-arch -e /dev/sda1 -r /dev/sda2 -u Sherlock`
- * or if you are ok with automatic partitioning and formatting.
-    `./install-arch -d /dev/sda -u Sherlock`
-
  
 ## After basic installation and reboot
  
 ### Get a network. 
+If you used the installer, this should have been done. - double check.
+if all went correctly it should be connected already. But maybe not.
+Once network manager has connected to a wifi it will remember and automatically
+connect.  Just in case here are the steps. 
 
  * The _install-arch_ script installed 
 [Network manager](https://wiki.archlinux.org/index.php/NetworkManager).   
 
  * [start and enable the Network manager](https://wiki.archlinux.org/index.php/NetworkManager#Enable_NetworkManager).
-   * `sudo systemctl enable NetworkManager; systemctl start NetworkManager`
+   * `sudo systemctl enable NetworkManager`
+   * `sudo systemctl start NetworkManager`
  
  * [Connect as you like:](https://wiki.archlinux.org/index.php/NetworkManager#Usage)
    * `nmtui` the NCurses based console gui
@@ -141,94 +242,6 @@ To clone this repo so you can just do the _install-packages_ script do this.
 
 Or more likely, you should just fork this repo and add what you want. 
 If you feel like sharing, do a pull request.
-
- 
-## Arch-installer
-
- This is a basic arch installer. There isn't much to installing arch as it is,
- but after doing it a bunch of times it's nice to have something that automates things a bit.
- 
- If you haven't installed Arch Linux manually a few times, following the instructions 
- [in the instllation guide](https://wiki.archlinux.org/index.php/Installation_guide#Localization)
- Then this script is possibly not for you.  Go earn some experience points over there first.
- 
- I sort of like doing the Arch install manually, it's not like it's too difficult. 
- Some of it can be a bit tedious but the most
- important things to me are really remembering the basic pacstrap packages I need, 
- creating my user account with wheel & sudo and then cloning this repo with submodules 
- into my home directory so I can install the rest of the system after reboot.
- 
- Basically, if you like, use _install-arch_ to install Arch from a live USB.
- Then, after reboot, come to this Arch-Setup folder in the admin user's home
- directory, installed by the _install-arch_ and run _install-packages_ to finish
- up installation and personalization of your system.
- 
-Really, doing it all manually is not rocket science, just be careful to follow the
-instructions.
-  * fdisk/parted, 
-  * mkfs, 
-  * mounts
-  * pacstrap
-  * genfstab 
-  * arch-chroot
-    * locale
-    * zoneinfo 
-    * boot-ctl 
-      * conf
-      * entries/entry
-    * passwd
-    * exit
-  * umount
-  * reboot
- 
- For me the important bits are these additions to the standard instructions. 
- I always seem to forget somthing here.
-
-    # install the base system pieces I want and need to get a basic install.
-    pacstrap /mnt base linux linux-firmware base-devel devtools sudo network-manager git zsh dialog
-
-    # create my userid with wheel then go edit /etc/sudoers to give sudo to wheel.
-    arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$user"
-    # fetch this repo into my new user account so I can install the rest of my stuff 
-    # with my package-installer after reboot.
-    arch-chroot -u "$user" /mnt git clone --remote-submodules --recurse-submodules https://github.com/EricaLinaG/Arch-Setup
- 
- 
-## package-installer
- 
- This script installs my metapackages and my personal configurations and scripts.
- 
- A checklist is provided for what you might want to install from my packages and repos.
- 
- Basic stuff like zsh dotfiles, .Xresources, my ~/bin folder, and emacs setup are
- in _Necessities_. After that there are some extra packages if you choose _tablet_ or
- mobile studio pro.  _High dpi_ is a group of settings which are added to **.Xresources**
- by the dotfiles repo if you ask for it.  I need them for my Wacom mobile studio pro
- and another computer which uses a wacom cintiq for a monitor. Both have resolutions around
- 3840x2160, the text is super tiny and the mouse pointer is invisible without these settings.
- 
- Xorg and friends are always installed if you choose _Xmonad_ or _Xfce_. 
- Dependencies between these choices is managed in the _Makefiles_.
- 
-### submodule repos used here are:
- 
- * [arch-pkgs](http://github.com/EricaLinaG/arch-pkgs) - My arch meta-packages.
- 
-#### The Necessities choice
-
-The necessities package gets installed no matter what. Everything depends on it.
-It includes all the basic things you might need.
-
- * necessities  - An Arch pkgbuild with various basic tools, wget, ssh, traceroute, emacs, vi, nano, etc..
- * [dotfiles](http://github.com/EricaLinaG/dotfiles)  - My dotfiles, zsh, Xresources, and miscellaneous other things that mostly
-   go into my _~/bin_ directory.  Includes a high DPI udate to _.Xresources_ if chosen.
- * [bc-extensions](http://github.com/EricaLinaG/bc-extensions) which is a set of extensions for bc.
- * [emacs-setup](http://github.com/EricaLinaG/emacs-setup) - My emacs setup which includes isync and mu4e for email.
-   [yay](http://github.com/jguer/yay) - An installer for packages in the AUR.
-
-#### Xmonad
- * [xmonad-setup](http://github.com/EricaLinaG/xmonad-setup) - My Xmonad configuration.
- 
 
 ## See Also:
 
