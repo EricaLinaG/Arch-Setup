@@ -45,3 +45,6 @@ account: dotfiles emacs-setup xmonad-setup
 
 git-sub-update:
 	git submodule update --recursive --remote
+
+git-sub-master:
+	git submodule -q foreach git pull -q origin master
