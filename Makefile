@@ -35,6 +35,16 @@ emacs-setup-w-extras: emacs-setup emacs-pkg-setup
 	$(MAKE) -C emacs-setup mu4e
 	$(MAKE) -C emacs-setup mbsync
 
+links:
+	$(MAKE) -C xmonad-setup links
+	$(MAKE) -C dotfiles links
+	$(MAKE) -C emacs-setup links
+
+clean-links:
+	$(MAKE) -C xmonad-setup clean-links
+	$(MAKE) -C dotfiles clean-links
+	$(MAKE) -C emacs-setup clean-links
+
 dotfiles: bc-extensions onboard-layouts
 xmonad-setup: Xmonad
 mobile-studio-pro: hidpi
@@ -48,3 +58,6 @@ git-sub-update:
 
 git-sub-master:
 	git submodule -q foreach git pull --rebase -q origin master
+
+# in a submodule with detached head to go to origin master of submodule.
+# git push origin HEAD:master
