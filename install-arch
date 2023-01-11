@@ -14,7 +14,6 @@ efi_partition=''
 root_partition=''
 swap_partition=''
 locale='en_US.utf8'
-locale='en_US.utf8'
 ## timezone='Europe/Paris'
 timezone='America/New York'
 user='erica'
@@ -291,13 +290,17 @@ echo "/etc/hosts!!!"
 cat /etc/hosts
 echo '======================================================================='
 
-echo "$locale -> /etc/locale.conf - locale-gen"
+echo "$locale > /etc/locale.gen -then-> locale-gen"
+echo "$locale > /etc/locale.conf"
 echo " See https://wiki.archlinux.org/index.php/Installation_guide#Localization"
-arch-chroot /mnt echo "LANG=${locale}" > /mnt/etc/locale.conf
+echo "LANG=${locale}" > /mnt/etc/locale.conf
+echo "${locale}" > /mnt/etc/locale.gen
 arch-chroot /mnt locale-gen
 echo '======================================================================='
 
-echo "usr/share/zoneinfo/${timezone} -> /etc/localtime"
+echo "turn on NTP"
+arch-chroot /mnt timedatectl set-ntp true
+echo "usr/share/zoneinfo/${timezone} linked to /etc/localtime"
 arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
 echo "hwclock --systohc"
 arch-chroot /mnt hwclock --systohc
@@ -327,7 +330,7 @@ echo " "
 echo '======================================================================='
 echo "create ${user} in wheel with zsh."w
 # create user in wheel with zsh.
-arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input ${user}
+arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,network,games,input ${user}
 arch-chroot /mnt chsh -s /usr/bin/zsh
 
 echo "Give sudo to wheel"
@@ -345,19 +348,12 @@ echo "cloning Arch-Setup repo into ${user} for setup after reboot"
 
 arch-chroot -u "$user" /mnt git clone --remote-submodules --recurse-submodules https://github.com/EricaLinaG/Arch-Setup.git /home/$user/Arch-Setup
 
-
-# I'm not sure why this doesn't work. But it doesn't even when it appears to.
-# Worst case it results in a core dump or kernel smashing...
-# echo '======================================================================='
-# echo "Setting passwords for root and ${user}"
-
-# echo "${user}:${password}" | chpasswd --root /mnt
-# echo "root:${password}" | chpasswd --root /mnt
-
-
 # get ready to reboot.
 
+echo "Enable network manager"
 arch-chroot /mnt systemctl enable NetworkManager
+
+echo "configure Arch Setup install-packages to run on reboot"
 echo "#nomenu" > /mnt/home/$user/.zshrc
 echo "cd Arch-Setup; nmtui; ./install-packages" > /mnt/home/$user/.zlogin
 arch-chroot /mnt chown erica:erica /home/$user/.zshrc
@@ -385,6 +381,7 @@ umount /mnt
 echo " "
 echo '======================================================================='
 echo 'After reboot follow the localization guidance here.'
+echo "It should be fine, but maybe not, there's been a bug"
 echo 'https://wiki.archlinux.org/index.php/Installation_guide#Localization'
 echo '======================================================================='
 echo " "
