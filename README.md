@@ -6,6 +6,28 @@ This repo consists of two scripts and some submodules.
  * package-installer - a script frontend to the Makefile which will install some meta packages 
  and my setup repos for various things.  Xorg, Xmonad, emacs, dotfiles, apps, etc.
  
+ 
+## Current error in processing. 
+   running make from the root Arch-Setup script or make causes the links to be 
+    created improperly.  The individual makes need to be run from their homes
+    for `PWD` to be in the right place.  It resolves to where make was 
+    originally invoked which is wrong, so all links will be bad.
+    
+   They can be fixed with `make clean-links` followed by `make links` in
+   each submodule.  dotfiles, emacs-setup, xmonad-setup.
+    
+   I should probably rethink this a little. Git submodules sort of suck.
+   
+   I had to check each one out individiually during my last install because checking 
+   out recursive during install was not happy.
+   
+   Then I have to change their remotes to ssh later when ssh is finally set up.
+   
+   Git can now point at a submodule's head, which is part of the pain, always
+   dealing with detached heads, updating them to HEAD, and not losing changes in
+   between. I'm not sure thats enough for me. 
+  
+ 
 ## Starting from scratch.
  - Make an Arch Linux installation medium.
    [the install guide is here.](https://wiki.archlinux.org/title/Installation_guide)
